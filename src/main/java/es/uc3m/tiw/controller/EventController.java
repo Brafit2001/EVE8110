@@ -22,7 +22,7 @@ public class EventController {
 	EventDAO daous;
 
 
-	// ----------------- GET ALL Events ----------------------
+	// ----------------- GET ALL EVENTS ----------------------
 	@RequestMapping(value="/events", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Event>> getEvents(@RequestParam(value="name",required=false) String name){
 		List<Event> eventList;
@@ -35,7 +35,7 @@ public class EventController {
 	}
 
 
-	// ----------------- GET Event ----------------------
+	// ----------------- GET EVENT ----------------------
 	@RequestMapping(value="/events/{name}",  method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Event> getEventByName(@PathVariable String name){
 		//return daous.findByName(name);
@@ -45,7 +45,7 @@ public class EventController {
 	}
 
 
-	// ----------------- SAVE Event ----------------------
+	// ----------------- SAVE EVENT ----------------------
 	@PostMapping("/events")
 	public ResponseEntity<Event> saveEvent(@RequestBody Event pevent){
 
@@ -66,7 +66,7 @@ public class EventController {
 		return daous.save(puser);
 	}*/
 
-	// ----------------- UPDATE Event ----------------------
+	// ----------------- UPDATE EVENT ----------------------
 	@RequestMapping(value="/events/{id}", method = RequestMethod.PUT)
 	public @ResponseBody ResponseEntity<Event> updateEvent(@PathVariable @Validated Long id, @RequestBody Event pEvent) {
 		ResponseEntity<Event> response;
@@ -86,7 +86,7 @@ public class EventController {
 		return response;
 	}
 
-	// ----------------- DELETE USER ----------------------
+	// ----------------- DELETE EVENT ----------------------
 	@RequestMapping(value="/events/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<Event> deleteEvent(@PathVariable @Validated Long id) {
 		ResponseEntity<Event> response;
