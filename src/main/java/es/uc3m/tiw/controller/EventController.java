@@ -36,12 +36,14 @@ public class EventController {
 
 
 	// ----------------- GET EVENT ----------------------
-	@RequestMapping(value="/events/{name}",  method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<Event> getEventByName(@PathVariable String name){
-		//return daous.findByName(name);
-		 Event ev = daous.findByName(name);
-		 System.out.println(ev.getName());
-		 return new ResponseEntity<>(ev, HttpStatus.OK);
+	@RequestMapping(value="/events/{id}",  method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Event> getEventByName(@PathVariable Long id){
+		 Event ev = daous.findById(id).orElse(null);
+		 if (ev == null){
+			 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		 }else{
+			 return new ResponseEntity<>(ev, HttpStatus.OK);
+		 }
 	}
 
 
@@ -50,6 +52,7 @@ public class EventController {
 	public ResponseEntity<Event> saveEvent(@RequestBody Event pevent){
 
 		ResponseEntity<Event> response;
+
 		Event newEvent = daous.save(pevent);
 		if (newEvent == null) {
 			response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -58,29 +61,33 @@ public class EventController {
 		}
 		return response;
 	}
-	
-	//???????????????
-	/*
-	@RequestMapping(method = RequestMethod.POST, value = "/userbis")
-	public @ResponseBody User saveUser2(@RequestBody @Validated User puser){
-		return daous.save(puser);
-	}*/
 
 	// ----------------- UPDATE EVENT ----------------------
 	@RequestMapping(value="/events/{id}", method = RequestMethod.PUT)
 	public @ResponseBody ResponseEntity<Event> updateEvent(@PathVariable @Validated Long id, @RequestBody Event pEvent) {
 		ResponseEntity<Event> response;
-		//Optional<User> us = daous.findById(id);
 		Event ev = daous.findById(id).orElse(null);
 		if (ev == null) {
 			response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			ev.setName(pEvent.getName());
-			ev.setCategory(pEvent.getCategory());
-			ev.setDate(pEvent.getDate());
-			ev.setCity(pEvent.getCity());
-			ev.setHall(pEvent.getHall());
-			ev.setImage(pEvent.getImage());
+			if (pEvent.getName().equals("") == false) {
+				ev.setName(pEvent.getName());
+			}
+			if (pEvent.getCategory().equals("") == false) {
+				ev.setCategory(pEvent.getCategory());
+			}
+			if (pEvent.getDate().equals("") == false) {
+				ev.setDate(pEvent.getDate());
+			}
+			if (pEvent.getCity().equals("") == false) {
+				ev.setCity(pEvent.getCity());
+			}
+			if (pEvent.getHall().equals("") == false) {
+				ev.setHall(pEvent.getHall());
+			}
+			if (pEvent.getImage().equals("") == false) {
+				ev.setImage(pEvent.getImage());
+			}
 			response = new ResponseEntity<>(daous.save(ev), HttpStatus.OK);
 		}
 		return response;
