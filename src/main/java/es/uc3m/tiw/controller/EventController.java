@@ -22,18 +22,13 @@ public class EventController {
 	EventDAO daous;
 
 
-	// ----------------- GET ALL EVENTS ----------------------
+	// ----------------- GET ALL EVENTS / FILTRO ----------------------
 	@RequestMapping(value="/events", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<List<Event>> getEvents(@RequestParam(value="name",required=false) String name){
+	public @ResponseBody ResponseEntity<List<Event>> getEvents(){
 		List<Event> eventList;
-		if (name == null) {
-			eventList = daous.findAll();
-		} else {
-			eventList = daous.findByCategory(name);
-		}
+		eventList = daous.findAll();
 		return new ResponseEntity<>(eventList, HttpStatus.OK);
 	}
-
 
 	// ----------------- GET EVENT ----------------------
 	@RequestMapping(value="/events/{id}",  method = RequestMethod.GET)
@@ -46,6 +41,13 @@ public class EventController {
 		 }
 	}
 
+	@PostMapping("/events/filter")
+	public ResponseEntity<List<Event>> filterEvent(@RequestBody Event pevent){
+		List<Event> eventList;
+		System.out.println(pevent.getName());
+		eventList = daous.findByNameOrCategoryOrCityOrDateOrHall(pevent.getName(), pevent.getCategory(), pevent.getCity(), pevent.getDate(), pevent.getHall());
+		return new ResponseEntity<>(eventList, HttpStatus.OK);
+	}
 
 	// ----------------- SAVE EVENT ----------------------
 	@PostMapping("/events")
