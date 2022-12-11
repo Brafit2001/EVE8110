@@ -54,7 +54,6 @@ public class EventController {
 	public ResponseEntity<Event> saveEvent(@RequestBody Event pevent){
 
 		ResponseEntity<Event> response;
-
 		Event newEvent = daous.save(pevent);
 		if (newEvent == null) {
 			response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
